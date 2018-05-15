@@ -140,9 +140,42 @@ void my_main() {
       copy_matrix(tmp, peek(csystems));
     }
     
+    if(op[i].opcode == SCALE){
+      tmp = make_scale( op[i].op.scale.d[0], op[i].op.scale.d[1], op[i].op.scale.d[2]);
+      matrix_mult(peek(csystems), tmp);
+      copy_matrix(tmp, peek(csystems));
+    }
     
+    if(op[i].opcode == ROTATE){
+      /*
+      theta = theta * (M_PI / 180);
+      if ( axis == 'x' )
+        tmp = make_rotX( theta );
+      else if ( axis == 'y' )
+        tmp = make_rotY( theta );
+      else
+        tmp = make_rotZ( theta );
+      matrix_mult(peek(csystems), tmp);
+      copy_matrix(tmp, peek(csystems));
+      */
+      //wrong
+    }
     
-  
+    if(op[i].opcode == PUSH){
+
+    }
+    
+    if(op[i].opcode == POP){
+
+    }
+    
+    if(op[i].opcode == DISPLAY){
+
+    }
+    
+    if(op[i].opcode == ){
+
+    }
     
   }
   
