@@ -53,7 +53,7 @@ void my_main() {
 
   int i;
   struct matrix *tmp;
-  struct stack *systems;
+  struct stack *csystems;
   screen t;
   zbuffer zb;
   color g;
@@ -96,12 +96,55 @@ void my_main() {
   sreflect[GREEN] = 0.5;
   sreflect[BLUE] = 0.5;
 
-  systems = new_stack();
+  csystems = new_stack();
   tmp = new_matrix(4, 1000);
   clear_screen( t );
   clear_zbuffer(zb);
   g.red = 0;
   g.green = 0;
   g.blue = 0;
+  
+  for(i = 0; i < lastop; i++){
+    
+    if(op[i].opcode == SPHERE){
+      add_sphere( tmp, op[i].op.sphere.d[0], op[i].op.sphere.d[1], op[i].op.sphere.d[2], op[i].op.sphere.r, step_3d);
+      matrix_mult(peek(csystems), tmp);
+      draw_polygons(tmp, s, zb, g);
+      tmp->lastcol = 0;
+    }
+    
+    if(op[i].opcode == TORUS){
+      add_torus( tmp, op[i].op.torus.d[0], op[i].op.torus.d[1], op[i].op.torus.d[2], op[i].op.torus.r0, op[i].op.torus.r1, step_3d);
+      matrix_mult(peek(csystems), tmp);
+      draw_polygons(tmp, s, zb, g);
+      tmp->lastcol = 0;
+    }
+    
+    if(op[i].opcode == BOX){
+      add_box( tmp, op[i].op.box.d0[0], op[i].op.sphere.d[1], op[i].op.sphere.d[2], op[i].op.box.d1[0], op[i].op.box.d1[1], op[i].op.box.d1[2], step_3d);
+      matrix_mult(peek(csystems), tmp);
+      draw_polygons(tmp, s, zb, g);
+      tmp->lastcol = 0;
+    }
+    
+    if(op[i].opcode == LINE){
+      add_edge( tmp, op[i].op.line.p0[0], op[i].op.line.p0[1], op[i].op.line.p0[2], op[i].op.line.p1[0], op[i].op.line.p1[1], op[i].op.line.p1[2]);
+      matrix_mult(peek(csystems), tmp);
+      draw_lines(tmp, s, zb, g);
+      tmp->lastcol = 0;
+    }
+    
+    if(op[i].opcode == MOVE){
+      tmp = make_translate( op[i].op.move.d[0], op[i].op.move.d[1], op[i].op.move.d[2]);
+      matrix_mult(peek(csystems), tmp);
+      copy_matrix(tmp, peek(csystems));
+    }
+    
+    
+    
+  
+    
+  }
+  
 
 }
