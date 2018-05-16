@@ -103,81 +103,80 @@ void my_main() {
   g.red = 0;
   g.green = 0;
   g.blue = 0;
-  
+
   for(i = 0; i < lastop; i++){
-    
+
     if(op[i].opcode == SPHERE){
       add_sphere( tmp, op[i].op.sphere.d[0], op[i].op.sphere.d[1], op[i].op.sphere.d[2], op[i].op.sphere.r, step_3d);
       matrix_mult(peek(csystems), tmp);
       draw_polygons(tmp, s, zb, g);
       tmp->lastcol = 0;
     }
-    
+
     if(op[i].opcode == TORUS){
       add_torus( tmp, op[i].op.torus.d[0], op[i].op.torus.d[1], op[i].op.torus.d[2], op[i].op.torus.r0, op[i].op.torus.r1, step_3d);
       matrix_mult(peek(csystems), tmp);
       draw_polygons(tmp, s, zb, g);
       tmp->lastcol = 0;
     }
-    
+
     if(op[i].opcode == BOX){
       add_box( tmp, op[i].op.box.d0[0], op[i].op.sphere.d[1], op[i].op.sphere.d[2], op[i].op.box.d1[0], op[i].op.box.d1[1], op[i].op.box.d1[2], step_3d);
       matrix_mult(peek(csystems), tmp);
       draw_polygons(tmp, s, zb, g);
       tmp->lastcol = 0;
     }
-    
+
     if(op[i].opcode == LINE){
       add_edge( tmp, op[i].op.line.p0[0], op[i].op.line.p0[1], op[i].op.line.p0[2], op[i].op.line.p1[0], op[i].op.line.p1[1], op[i].op.line.p1[2]);
       matrix_mult(peek(csystems), tmp);
       draw_lines(tmp, s, zb, g);
       tmp->lastcol = 0;
     }
-    
+
     if(op[i].opcode == MOVE){
       tmp = make_translate( op[i].op.move.d[0], op[i].op.move.d[1], op[i].op.move.d[2]);
       matrix_mult(peek(csystems), tmp);
       copy_matrix(tmp, peek(csystems));
     }
-    
+
     if(op[i].opcode == SCALE){
       tmp = make_scale( op[i].op.scale.d[0], op[i].op.scale.d[1], op[i].op.scale.d[2]);
       matrix_mult(peek(csystems), tmp);
       copy_matrix(tmp, peek(csystems));
     }
-    
+
+    //probably wrong lol
     if(op[i].opcode == ROTATE){
-      /*
-      theta = theta * (M_PI / 180);
-      if ( axis == 'x' )
+      theta = op[i].op.rotate.degrees * (M_PI / 180);
+
+      if ( op[i].op.rotate.axis == 0 )
         tmp = make_rotX( theta );
-      else if ( axis == 'y' )
+      else if ( op[i].op.rotate.axis == 1 )
         tmp = make_rotY( theta );
       else
         tmp = make_rotZ( theta );
       matrix_mult(peek(csystems), tmp);
       copy_matrix(tmp, peek(csystems));
-      */
-      //wrong
     }
-    
+
     if(op[i].opcode == PUSH){
-
+      push(csystems);
     }
-    
+
     if(op[i].opcode == POP){
-
+      pop(csystems);
     }
-    
+
     if(op[i].opcode == DISPLAY){
-
+      display( s );
     }
-    
-    if(op[i].opcode == ){
 
+    if(op[i].opcode == SAVE_COORDS){
+      save_extension(s, op[i].op.save_coordinate_system.p);
     }
-    
+
   }
-  
+
 
 }
