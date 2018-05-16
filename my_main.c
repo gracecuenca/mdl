@@ -139,12 +139,14 @@ void my_main() {
       tmp = make_translate( op[i].op.move.d[0], op[i].op.move.d[1], op[i].op.move.d[2]);
       matrix_mult(peek(csystems), tmp);
       copy_matrix(tmp, peek(csystems));
+      tmp->lastcol=0;
       break;
 
     case SCALE:
       tmp = make_scale( op[i].op.scale.d[0], op[i].op.scale.d[1], op[i].op.scale.d[2]);
       matrix_mult(peek(csystems), tmp);
       copy_matrix(tmp, peek(csystems));
+      tmp->lastcol=0;
       break;
 
     case ROTATE:
@@ -157,6 +159,7 @@ void my_main() {
         tmp = make_rotZ( theta );
       matrix_mult(peek(csystems), tmp);
       copy_matrix(tmp, peek(csystems));
+      tmp->lastcol=0;
       break;
 
     case PUSH:

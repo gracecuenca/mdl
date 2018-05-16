@@ -5,6 +5,12 @@ CC= gcc
 
 all: parser
 
+run: all
+	./mdl robot.mdl
+
+image: all
+	./mdl script
+
 parser: lex.yy.c y.tab.c y.tab.h $(OBJECTS)
 	gcc -o mdl $(CFLAGS) lex.yy.c y.tab.c $(OBJECTS) $(LDFLAGS)
 
